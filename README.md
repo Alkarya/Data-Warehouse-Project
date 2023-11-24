@@ -3,12 +3,12 @@
 ## Project Description
 
 This project has to purpose to support a startup called Sparkify, with time it has grown their user base and song database and want to move their processes and data onto the cloud.
-Thei data resides in S3, in a directory of JSON logs on user activity on the app, as well as a directory with JSON metadata on the songs in their app.
+Their data resides in S3, in a directory of JSON logs on user activity on the app, as well as a directory with JSON metadata on the songs in their app.
 As their data engineer, you are tasked with building an ETL pipeline that extracts their data from S3, stages them in Redshift, and transforms data into a set of dimensional tables for their analytics team to continue finding insights into what songs their users are listening to.
 
 ### Scripts/files
-* `create_tables.py` - python script that manages the objects of the Data Warehouse, it drops and creates de tables when called
-* `etl.py` - Copies all files from S3 into the staging tables, and
+* `create_tables.py` - python script that manages the objects of the Data Warehouse, it drops and creates the tables when called
+* `etl.py` - Copies all files from S3 into the staging tables, and the inserts the data into the final tables
 * `dwh.cfg` - Config file with the necessary info to connect to the redshift cluster
 * `sql_queries.py` - defines all the sql queries need to create the tables and all insert statements
 
