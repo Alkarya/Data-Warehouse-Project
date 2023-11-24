@@ -5,11 +5,15 @@ import configparser
 config = configparser.ConfigParser()
 config.read('dwh.cfg')
 
+
+# added variables to get configs
 ROLE_ARN = config.get('IAM_ROLE', 'ARN')
-REGION_NAME = config.get('S3', 'REGION_NAME')
+
 LOG_DATA = config.get('S3', 'LOG_DATA')
 LOG_JSONPATH = config.get('S3', 'LOG_JSONPATH')
 SONG_DATA = config.get('S3', 'SONG_DATA')
+REGION_NAME = config.get('S3', 'REGION_NAME')
+
 
 # DROP TABLES
 
@@ -167,11 +171,11 @@ songplay_table_insert = ("""
 
 user_table_insert = ("""
     INSERT INTO users (user_id, first_name, last_name, gender, level)
-    SELECT  DISTINCT t1.user_id           AS user_id,
-            t1.first_name                 AS first_name,
-            t1.last_name                  AS last_name,
-            t1.gender                     AS gender,
-            t1.level                      AS level
+    SELECT  DISTINCT t1.user_id AS user_id,
+            t1.first_name AS first_name,
+            t1.last_name AS last_name,
+            t1.gender AS gender,
+            t1.level AS level
     FROM staging_events AS t1
     WHERE t1.user_id IS NOT NULL;
 """)
@@ -179,34 +183,34 @@ user_table_insert = ("""
 song_table_insert = ("""
     INSERT INTO songs (song_id, title, artist_id, year, duration)
     SELECT DISTINCT t1.song_id AS song_id,
-        t1.title        AS title,
-        t1.artist_id    AS artist_id,
-        t1.year         AS year,
-        t1.duration     AS duration
+        t1.title AS title,
+        t1.artist_id AS artist_id,
+        t1.year AS year,
+        t1.duration AS duration
     FROM staging_songs AS t1
     WHERE t1.song_id IS NOT NULL;
 """)
 
 artist_table_insert = ("""
     INSERT INTO artists (artist_id, name, location, latitude, longitude)
-    SELECT  DISTINCT t1.artist_id   AS artist_id,
-            t1.artist_name          AS name,
-            t1.artist_location      AS location,
-            t1.artist_latitude      AS latitude,
-            t1.artist_longitude     AS longitude
+    SELECT  DISTINCT t1.artist_id AS artist_id,
+            t1.artist_name AS name,
+            t1.artist_location AS location,
+            t1.artist_latitude AS latitude,
+            t1.artist_longitude AS longitude
     FROM staging_songs AS t1
     WHERE t1.artist_id IS NOT NULL;
 """)
 
 time_table_insert = ("""
     INSERT INTO time (start_time, hour, day, week, month, year, weekday)
-    SELECT  DISTINCT TIMESTAMP 'epoch' + t1.ts/1000 * INTERVAL '1 second'        AS start_time,
-            EXTRACT(hour FROM start_time)    AS hour,
-            EXTRACT(day FROM start_time)     AS day,
-            EXTRACT(week FROM start_time)    AS week,
-            EXTRACT(month FROM start_time)   AS month,
-            EXTRACT(year FROM start_time)    AS year,
-            EXTRACT(week FROM start_time)    AS weekday
+    SELECT  DISTINCT TIMESTAMP 'epoch' + t1.ts/1000 * INTERVAL '1 second' AS start_time,
+            EXTRACT(hour FROM start_time) AS hour,
+            EXTRACT(day FROM start_time) AS day,
+            EXTRACT(week FROM start_time) AS week,
+            EXTRACT(month FROM start_time) AS month,
+            EXTRACT(year FROM start_time) AS year,
+            EXTRACT(week FROM start_time) AS weekday
     FROM staging_events AS t1
 """)
 
